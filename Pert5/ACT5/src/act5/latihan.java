@@ -1,0 +1,369 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package act5;
+
+import javax.swing.*;
+import java.sql.*;
+
+/**
+ *
+ * @author abdan
+ */
+public class latihan extends javax.swing.JFrame {
+
+    private Connection conn;
+    private PreparedStatement pstmt;
+    private Statement stmt;
+    private ResultSet rs;
+
+
+    /**
+     * Creates new form latihan
+     */
+    public latihan() {
+        initComponents();
+        connectDatabase();
+    }
+    
+    private void connectDatabase() {
+     try {
+         // Replace with your database details
+         String url = "jdbc:mysql://localhost:3306/latihan";
+         String username = "root";
+         String password = "abdan_014";
+         conn = DriverManager.getConnection(url, username, password);
+     } catch (SQLException e) {
+         JOptionPane.showMessageDialog(this, "Database connection error: " + e.getMessage());
+     }
+ }
+
+    
+     private void saveData() {
+        String nama = jTextField1.getText();
+        String jenisLatihan = (String) jComboBox1.getSelectedItem();
+        String gerakan = jTextField2.getText();
+        String waktuLatihan = jTextField3.getText();
+
+        if (nama.isEmpty() || gerakan.isEmpty() || waktuLatihan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                String query = "INSERT INTO latihan (nama, jenis_latihan, gerakan, waktu_latihan) VALUES (?, ?, ?, ?)";
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, nama);
+                pstmt.setString(2, jenisLatihan);
+                pstmt.setString(3, gerakan);
+                pstmt.setString(4, waktuLatihan);
+                pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Data berhasil disimpan!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+     
+     private void editData() {
+        String nama = jTextField1.getText();
+        String jenisLatihan = (String) jComboBox1.getSelectedItem();
+        String gerakan = jTextField2.getText();
+        String waktuLatihan = jTextField3.getText();
+
+        if (nama.isEmpty() || gerakan.isEmpty() || waktuLatihan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                String query = "UPDATE latihan SET jenis_latihan = ?, gerakan = ?, waktu_latihan = ? WHERE nama = ?";
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, jenisLatihan);
+                pstmt.setString(2, gerakan);
+                pstmt.setString(3, waktuLatihan);
+                pstmt.setString(4, nama);
+                pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error updating data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    // Delete data
+    private void deleteData() {
+        String nama = jTextField1.getText();
+
+        if (nama.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                String query = "DELETE FROM latihan WHERE nama = ?";
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, nama);
+                pstmt.executeUpdate();
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText("");
+                jComboBox1.setSelectedIndex(0);
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error deleting data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void SimpanActionPerformed(java.awt.event.ActionEvent evt) {
+        saveData();
+    }
+
+    private void EditActionPerformed(java.awt.event.ActionEvent evt) {
+        editData();
+    }
+
+    private void HapusActionPerformed(java.awt.event.ActionEvent evt) {
+        deleteData();
+    }
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        Simpan = new javax.swing.JButton();
+        Edit = new javax.swing.JButton();
+        Hapus = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Input Latihan");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Menurunkan Berat Badan", "Menaikan Berat Badan" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Jenis Latihan");
+
+        jLabel3.setText("Nama");
+
+        jLabel4.setText("Gerakan");
+
+        jLabel5.setText("Waktu Latihan");
+
+        Simpan.setText("Simpan");
+
+        Edit.setText("Edit");
+
+        Hapus.setText("Hapus");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(131, 131, 131)
+                                .addComponent(jTextField1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(92, 92, 92)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField2)
+                                    .addComponent(jTextField3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(Simpan)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(Edit)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(Hapus)
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(422, 422, 422)
+                        .addComponent(jLabel1)))
+                .addContainerGap(650, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel1)
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)))
+                    .addComponent(jLabel3))
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Simpan)
+                    .addComponent(Edit)
+                    .addComponent(Hapus))
+                .addContainerGap(273, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+   private void SimpanActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        String nama = jTextField1.getText();
+        String jenisLatihan = (String) jComboBox1.getSelectedItem();
+        String gerakan = jTextField2.getText();
+        String waktuLatihan = jTextField3.getText();
+
+        if (nama.isEmpty() || gerakan.isEmpty() || waktuLatihan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Simpan data (bisa disimpan ke database atau struktur data)
+            JOptionPane.showMessageDialog(this, "Data berhasil disimpan!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }               
+   
+    private void EditActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        String nama = jTextField1.getText();
+        String jenisLatihan = (String) jComboBox1.getSelectedItem();
+        String gerakan = jTextField2.getText();
+        String waktuLatihan = jTextField3.getText();
+
+        if (nama.isEmpty() || gerakan.isEmpty() || waktuLatihan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Edit data (misalnya memperbarui data yang sudah ada)
+            JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    
+    private void HapusActionPerformed(java.awt.event.ActionEvent evt) {
+        // Clear all text fields and combo box
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jComboBox1.setSelectedIndex(0);
+
+        JOptionPane.showMessageDialog(this, "Data berhasil dihapus!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+    }        
+        
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+         String nama = jTextField1.getText();
+        String jenisLatihan = (String) jComboBox1.getSelectedItem();
+        String gerakan = jTextField2.getText();
+        String waktuLatihan = jTextField3.getText();
+
+        if (nama.isEmpty() || gerakan.isEmpty() || waktuLatihan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Edit data (misalnya memperbarui data yang sudah ada)
+            JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+      // Action for the 'Hapus' button
+    private void HapusActionPerformed() {
+    // Clear all text fields and combo box
+    jTextField1.setText("");
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jComboBox1.setSelectedIndex(0);
+
+    JOptionPane.showMessageDialog(this, "Data berhasil dihapus!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+}
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new latihan().setVisible(true);
+            }
+        });
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(latihan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(latihan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(latihan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(latihan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new latihan().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Edit;
+    private javax.swing.JButton Hapus;
+    private javax.swing.JButton Simpan;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    // End of variables declaration//GEN-END:variables
+}
